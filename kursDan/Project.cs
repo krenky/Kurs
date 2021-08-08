@@ -4,30 +4,31 @@ using System.Text;
 
 namespace kursDan
 {
-    class Project
+    [Serializable]
+    public class Project
     {
         /// <summary>
         /// Создал консруктор 
         /// </summary>
-        string Name;
-        int Money;
+        string _name;
+        int _money;
 
-
+        public Project()
+        {
+        }
 
         public Project(string InputName, int money)
         {
-            Name1 = InputName;
-            Money1 = money;
-
-
+            Name_Project = InputName;
+            Money = money;
         }
 
 
 
 
 
-        public string Name1 { get => Name; set => Name = value; }//Инскапсуляция
-        public int Money1 { get => Money; set => Money = value; }
+        public string Name_Project { get => _name; set => _name = value; }//Инскапсуляция
+        public int Money { get => _money; set => _money = value; }
     }
 }
 

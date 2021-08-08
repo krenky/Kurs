@@ -12,18 +12,20 @@
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="DepartmentsData" Grid.Column="1"/>
-        <DataGrid x:Name="ProjectData" Grid.Column="2"/>
+        <DataGrid x:Name="DepartmentsData" Grid.Column="1" SelectionChanged="DepartmentsData_SelectionChanged"/>
+        <DataGrid x:Name="ProjectData" Grid.Column="2" SelectionChanged="ProjectData_SelectionChanged"/>
         <Button x:Name="AddDepartment_Button" Content="AddDepartment" VerticalAlignment="Top" Height="41" Click="AddDepartment_Button_Click"/>
         <Button x:Name="DeleteDepartment_Button" Content="Delete Department" VerticalAlignment="Top" Height="41" Margin="0,41,0,0" Click="DeleteDepartment_Button_Click"/>
         <Button x:Name="AddProject_Button" Content="Add Project" VerticalAlignment="Top" Height="41" Margin="0,82,0,0" Click="AddProject_Button_Click"/>
-        <Button x:Name="DeleteProject_Button" Content="Delete Project" VerticalAlignment="Top" Height="41" Margin="0,123,0,0"/>
-        <TextBox x:Name="NameDepartment" Margin="0,298,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Label x:Name="NameDepartmentLabel" Content="Name dep." Margin="0,267,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
-        <TextBox x:Name="NameProject" Margin="0,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Label x:Name="NameProjectLabel" Content="Name project" Margin="0,321,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
-        <TextBox x:Name="BudgetProject" Margin="0,417,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Label x:Name="BudgetProjectLabel" Content="Budget project" Margin="0,375,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
-        
+        <Button x:Name="DeleteProject_Button" Content="Delete Project" VerticalAlignment="Top" Height="41" Margin="0,123,0,0" Click="DeleteProject_Button_Click"/>
+        <TextBox x:Name="NameDepartment" Margin="0,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Label x:Name="NameDepartmentLabel" Content="Name dep." Margin="0,169,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
+        <TextBox x:Name="NameProject" Margin="0,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Label x:Name="NameProjectLabel" Content="Name project" Margin="0,223,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
+        <TextBox x:Name="BudgetProject" Margin="0,308,0,0" TextWrapping="Wrap" Height="18" VerticalAlignment="Top"/>
+        <Label x:Name="BudgetProjectLabel" Content="Budget project" Margin="0,277,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="94"/>
+        <Button x:Name="Save_Button" Content="Save" Margin="0,331,0,0" VerticalAlignment="Top" Click="Save_Button_Click"/>
+        <Button x:Name="Load_Button" Content="Load" Margin="0,351,0,0" VerticalAlignment="Top" Click="Load_Button_Click"/>
+
     </Grid>
 </Window>

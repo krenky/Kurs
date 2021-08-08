@@ -17,7 +17,8 @@ namespace kursDan
         7        5             copypasta
             6
      */
-    class Enterprises
+    [Serializable]
+    public class Enterprises
     {
         /// <summary>
         /// Класс Enterprises для управления списком
@@ -64,7 +65,7 @@ namespace kursDan
 
                 }
 
-                curent = curent.Next;
+                curent = curent.GetNext();
 
                 if (curent == Head)
                 { return false; }
@@ -74,10 +75,10 @@ namespace kursDan
 
             Department Name = new Department(NewNameDepartmens);
 
-            Name.Previous = curent;
-            Name.Next = curent.Next;
-            curent.Next.Previous = Name;
-            curent.Next = Name;
+            Name.SetPrevious(curent);
+            Name.SetNext(curent.GetNext());
+            curent.GetNext().SetPrevious(Name);
+            curent.SetNext(Name);
 
             return true;
 
@@ -102,16 +103,16 @@ namespace kursDan
                 {
                     break;
                 }
-                curent = curent.Next;
+                curent = curent.GetNext();
                 if (curent == Head)
                 { return false; }
             }
             while (curent != Head);
             Department Name = new Department(NewNameDepartmens);
-            Name.Next = curent;
-            Name.Previous = curent.Previous;
-            curent.Previous.Next = Name;
-            curent.Previous = Name;
+            Name.SetNext(curent);
+            Name.SetPrevious(curent.GetPrevious());
+            curent.GetPrevious().SetNext(Name);
+            curent.SetPrevious(Name);
             return true;
         }
 
@@ -122,15 +123,37 @@ namespace kursDan
             if (Head == null)
             {
                 Head = Name;
-                Head.Next = Name;
-                Head.Previous = Name;
+                Head.SetNext(Name);
+                Head.SetPrevious(Name);
             }
             else
             {
-                Name.Previous = Head.Previous;
-                Name.Next = Head;
-                Head.Previous.Next = Name;
-                Head.Previous = Name;
+                Name.SetPrevious(Head.GetPrevious());
+                Name.SetNext(Head);
+                Head.GetPrevious().SetNext(Name);
+                Head.SetPrevious(Name);
+            }
+
+            Count++;
+
+            return true;
+
+        }
+        public bool AddDepartment(Department data)//Добавление отделов
+        {
+
+            if (Head == null)
+            {
+                Head = data;
+                Head.SetNext(data);
+                Head.SetPrevious(data);
+            }
+            else
+            {
+                data.SetPrevious(Head.GetPrevious());
+                data.SetNext(Head);
+                Head.GetPrevious().SetNext(data);
+                Head.SetPrevious(data);
             }
 
             Count++;
@@ -152,7 +175,7 @@ namespace kursDan
                 }
                 else 
                 {
-                    current = current.Next;
+                    current = current.GetNext();
 
                 
                 }
@@ -178,7 +201,7 @@ namespace kursDan
 
                 }
 
-                curent = curent.Next;
+                curent = curent.GetNext();
 
                 if (curent == Head)
                 { return false; }
@@ -192,8 +215,12 @@ namespace kursDan
 
         }
 
-
-        public bool Delete(string data)//Удаление отдела
+        /// <summary>
+        /// Del Department
+        /// </summary>
+        /// <param name="Name">Name department</param>
+        /// <returns></returns>
+        public bool Delete(string Name)//Удаление отдела
         {
             Department current = Head;
 
@@ -202,12 +229,12 @@ namespace kursDan
             // поиск удаляемого узла
             do
             {
-                if (current.Название.Equals(data))
+                if (current.Название.Equals(Name))
                 {
                     removedItem = current;
                     break;
                 }
-                current = current.Next;
+                current = current.GetNext();
             }
             while (current != Head);
 
@@ -221,10 +248,10 @@ namespace kursDan
                     // если удаляется первый элемент
                     if (removedItem == Head)
                     {
-                        Head = Head.Next;
+                        Head = Head.GetNext();
                     }
-                    removedItem.Previous.Next = removedItem.Next;///?
-                    removedItem.Next.Previous = removedItem.Previous;///?
+                    removedItem.GetPrevious().SetNext(removedItem.GetNext());///?
+                    removedItem.GetNext().SetPrevious(removedItem.GetPrevious());///?
                 }
                 Count--;
 
@@ -249,7 +276,7 @@ namespace kursDan
                 {
                     Sim = Sim + "Компания: " + current.Название +" "+ current.Print() + "\n";
 
-                    current = current.Next;
+                    current = current.GetNext();
 
                 }
                 while (current != Head);
@@ -269,7 +296,7 @@ namespace kursDan
             Department department = Head;
 
 
-            while (department != Head.Previous)
+            while (department != Head.GetPrevious())
             {
                 moneydepartmens = moneydepartmens + department.Projectmoney();
 
@@ -277,17 +304,17 @@ namespace kursDan
             return moneydepartmens;
 
         }
-        public List<Department> GetList()
-        {
-            List<Department> departments = new List<Department>();
-            Department department = _head;
-            do
-            {
-                departments.Add(department);
-                department = department.Next;
-            } while (department != _head);
-            return departments;
-        }
+        //public List<Department> GetList()
+        //{
+        //    List<Department> departments = new List<Department>();
+        //    Department department = _head;
+        //    do
+        //    {
+        //        departments.Add(department);
+        //        department = department.GetNext();
+        //    } while (department != _head);
+        //    return departments;
+        //}
         public Department GetDepartment(Department department)
         {
             Department head = _head;
@@ -300,7 +327,7 @@ namespace kursDan
                         return head;
                     }
                     else
-                        head = head.Next;
+                        head = head.GetNext();
 
                 } while (head != _head);
             }

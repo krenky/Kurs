@@ -4,7 +4,8 @@ using System.Text;
 
 namespace kursDan
 {
-    class Department
+    [Serializable]
+    public class Department
     {
         /// <summary>
         /// Изменил поля и удалил методы
@@ -12,35 +13,52 @@ namespace kursDan
         /// </summary>
         int First, End = -1;
         int Count = 10;
-        Project[] projects;
+        Project[] _projects;
         string _namedepartments;
 
         private Department _next;
         private Department _previous;
         public string Название { get => _namedepartments; set => _namedepartments = value; }
         public int Бюджет { get => Projectmoney(); }
-        public Department Previous { get => _previous; set => _previous = value; }
-        public Department Next { get => _next; set => _next = value; }
-        
+        internal Project[] Projects { get => _projects; set => _projects = value; }
 
-        
-
-
-        public Department(int InputCount, string Name)//Констркутор
+        public Department GetPrevious()
         {
-            Count = InputCount;
-            projects = new Project[Count];
-            //Name = Namedepartments;
-            Название = Name;
+            return _previous;
+        }
+
+        public void SetPrevious(Department value)
+        {
+            _previous = value;
+        }
+
+        public Department GetNext()
+        {
+            return _next;
+        }
+
+        public void SetNext(Department value)
+        {
+            _next = value;
         }
 
         public Department(string Name)//Если нет кол. проектов то оно по стандарту бует равно 10
         {
             Count = 10;
-            projects = new Project[Count];
+            _projects = new Project[Count];
             Название = Name;
             _next = this;
             _previous = this;
+        }
+
+        public Department()
+        {
+        }
+
+        public Department(string namedepartments, Project[] projects)
+        {
+            Projects = projects;
+            Название = namedepartments;
         }
 
         public bool Add(string Name, int Money)//Добавление данных в список
@@ -52,14 +70,11 @@ namespace kursDan
             
            
             End = (End + 1) % Count;
-            projects[End] = project;
+            _projects[End] = project;
 
             return true;
 
         }
-
-        
-
         public Project[] Exist(Project[] projects, int i)//Сдвиг
         {
             if (End == i)
@@ -83,16 +98,18 @@ namespace kursDan
 
 
         }
-
-
+        /// <summary>
+        /// уданление проекта
+        /// </summary>
+        /// <param name="Name"></param>
         public void Delete(string Name)//Удаление данных
         {
-            for (int i = 0; i < projects.Length; i++)
+            for (int i = 0; i < _projects.Length; i++)
             {
                 if (Comparison(Name, i))
                 {
-                    projects[i] = null;
-                    projects = Exist(projects, i);
+                    _projects[i] = null;
+                    _projects = Exist(_projects, i);
                     break;
 
 
@@ -107,11 +124,11 @@ namespace kursDan
 
         public bool Comparison(string Input, int Index)
         {
-            if (projects[Index] == null)
+            if (_projects[Index] == null)
             { return false; }
 
 
-            if (projects[Index].Name1 == Input)
+            if (_projects[Index].Name_Project == Input)
             {
                 return true;
 
@@ -128,11 +145,11 @@ namespace kursDan
 
 
             string Info = "";
-            foreach (var i in projects)
+            foreach (var i in _projects)
             {
                 if (i != null)
                 {
-                    Info = Info + " " + i.Name1 + " " + i.Money1;
+                    Info = Info + " " + i.Name_Project + " " + i.Money;
                 
                 }
             
@@ -164,20 +181,35 @@ namespace kursDan
 
             for (int s = First; s <= End; s++)
             {
-                OverMoney = OverMoney + projects[s].Money1;
+                OverMoney = OverMoney + _projects[s].Money;
 
 
             }
             return OverMoney;
 
         }
-        public Project[] GetProjects()
+        public List<Project> GetProjects()
         {
+            List<Project> projects = new List<Project>();
+            foreach (var i in _projects)
+            {
+                if (i != null)
+                    projects.Add(i);
+            }
             return projects;
         }
+        public List<Department> ToList()
+        {
+            Department current = this;
 
-        
-
-
+            List<Department> departments = new List<Department>();
+            do
+            {
+                departments.Add(current);
+                if (current.GetNext() != null)
+                    current = current.GetNext();
+            } while (current != this);
+            return departments;
+        }
     }
 }
